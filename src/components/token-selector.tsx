@@ -14,22 +14,24 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import useTokenBalances from "@/lib/hooks/useTokenBalances";
-import { cn } from "@/lib/utils";
+import { cn, tokenKey } from "@/lib/utils";
 import { Token } from "@/types";
 import { ChevronsUpDown } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import ChainTokenLogo from "./chain-token-logo";
-
-const ADDRESS = "0x8840BB0D5990161889388Ab0979EF2103cF0dAdF";
-
-export default function TokenSelector() {
+import { useEvmTokenBalances } from "@/lib/hooks/useTokenBalances";
+export default function TokenSelector({ wallet }: { wallet: string }) {
   const [open, setOpen] = useState(false);
   const [selectedToken, setSelectedToken] = useState<Token>();
 
-  const { balances, isBalancesLoading } = useTokenBalances({
-    address: ADDRESS,
-  });
+  const { data, isLoading: isBalancesLoading } = useEvmTokenBalances(
+    wallet as `0x${string}`,
+    {
+      excludeSpamTokens: true,
+    }
+  );
+
+  const balances = data?.balances;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -91,6 +93,8 @@ function TokenListItem({
   setSelectedToken: Dispatch<SetStateAction<Token | undefined>>;
   token: Token;
 }) {
+
+  const isSelected = selectedToken && (tokenKey(selectedToken) === itemKey);
   return (
     <CommandItem
       value={itemKey}
@@ -99,7 +103,7 @@ function TokenListItem({
       }}
       className={cn(
         "flex gap-2 cursor-pointer text-xs border",
-        selectedToken?.id === token.id
+        isSelected
           ? "border-border bg-secondary"
           : "border-transparent"
       )}
