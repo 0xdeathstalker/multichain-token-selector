@@ -47,8 +47,8 @@ export default function TokenSelector() {
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[260px] p-0">
-        <Command>
+      <PopoverContent className="w-[calc(100vw_-_4rem)] sm:w-64 p-0">
+        <Command className="max-h-[80svh]">
           <CommandInput placeholder="Search token..." className="text-xs" />
           <CommandList>
             <CommandEmpty className="text-xs">No token found.</CommandEmpty>
@@ -99,7 +99,7 @@ function TokenListItem({
     >
       <ChainTokenLogo token={token} />
       {token.symbol}
-      <div className="ml-auto space-x-1">
+      <div className="ml-auto space-x-1 font-geist-mono">
         <span>{token.amount}</span>
         <span>(${token.value_usd?.toFixed(2)})</span>
       </div>
