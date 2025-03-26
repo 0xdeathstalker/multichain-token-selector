@@ -7,6 +7,11 @@ type UseTokenBalancesParams = {
   address: `0x${string}` | undefined;
 };
 
+function getAddress(address: string): `0x${string}` {
+  if (address === "native") return "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
+  return address as `0x${string}`;
+}
+
 export default function useTokenBalances({ address }: UseTokenBalancesParams) {
   if (!address) throw new Error("Address not found!");
 
@@ -29,19 +34,17 @@ export default function useTokenBalances({ address }: UseTokenBalancesParams) {
 
   const newBalances = data?.balances.reduce(
     (acc: Record<string, Token>, token) => {
-      const key = `${token.chain_id}-${
-        token.address === "native"
-          ? "0x0000000000000000000000000000000000000000"
-          : token.address
-      }`;
+      const key = `${token.chain_id}-${getAddress(token.address)}`;
       acc[key] = {
         id: key,
+        chain: token.chain === "avalanche_c" ? "avalanche" : token.chain,
         chain_id: token.chain_id.toString(),
         amount: (Number(token.amount) / Math.pow(10, token.decimals)).toFixed(
           4
         ),
         decimals: token.decimals,
         symbol: token.symbol,
+        address: getAddress(token.address),
         value_usd: token.value_usd,
         price_usd: token.price_usd,
       };

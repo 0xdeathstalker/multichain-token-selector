@@ -18,7 +18,8 @@ import useTokenBalances from "@/lib/hooks/useTokenBalances";
 import { cn } from "@/lib/utils";
 import { Token } from "@/types";
 import { Check, ChevronsUpDown } from "lucide-react";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import ChainTokenLogo from "./chain-token-logo";
 
 const ADDRESS = "0x8840BB0D5990161889388Ab0979EF2103cF0dAdF";
 
@@ -26,13 +27,8 @@ export default function TokenSelector() {
   const [open, setOpen] = useState(false);
   const [selectedToken, setSelectedToken] = useState<Token>();
 
-  const { balances, isBalancesError, isBalancesLoading } = useTokenBalances({
+  const { balances, isBalancesLoading } = useTokenBalances({
     address: ADDRESS,
-  });
-  console.log("[balances_data] = ", {
-    balances: balances,
-    isBalancesError,
-    isBalancesLoading,
   });
 
   return (
@@ -42,17 +38,20 @@ export default function TokenSelector() {
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-[200px] justify-between text-xs"
         >
-          {selectedToken ? selectedToken.symbol : "Select token..."}
+          <div className="inline-flex items-center gap-2">
+            {selectedToken?.address && <ChainTokenLogo token={selectedToken} />}
+            {selectedToken ? selectedToken.symbol : "Select token..."}
+          </div>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-[260px] p-0">
         <Command>
-          <CommandInput placeholder="Search token..." />
+          <CommandInput placeholder="Search token..." className="text-xs" />
           <CommandList>
-            <CommandEmpty>No token found.</CommandEmpty>
+            <CommandEmpty className="text-xs">No token found.</CommandEmpty>
 
             <CommandGroup>
               {!isBalancesLoading &&
@@ -61,30 +60,13 @@ export default function TokenSelector() {
                   // TODO: remove this check once networks.json is defined
                   if (token.value_usd) {
                     return (
-                      <CommandItem
+                      <TokenListItem
                         key={`${key}-${index}`}
-                        value={key}
-                        onSelect={() => {
-                          setSelectedToken(token);
-                        }}
-                        className="flex gap-2 cursor-pointer"
-                      >
-                        {/* TODO: token logo with chain logo should come here */}
-                        {token.chain_id}
-                        {token.symbol}
-                        <span className="ml-auto">
-                          {token.value_usd?.toFixed(2)}
-                        </span>
-
-                        <Check
-                          className={cn(
-                            "mr-2 h-4 w-4",
-                            selectedToken?.id === key
-                              ? "opacity-100"
-                              : "opacity-0"
-                          )}
-                        />
-                      </CommandItem>
+                        itemKey={key}
+                        token={token}
+                        selectedToken={selectedToken}
+                        setSelectedToken={setSelectedToken}
+                      />
                     );
                   }
                 })}
@@ -93,5 +75,41 @@ export default function TokenSelector() {
         </Command>
       </PopoverContent>
     </Popover>
+  );
+}
+
+function TokenListItem({
+  itemKey,
+  selectedToken,
+  setSelectedToken,
+  token,
+}: {
+  itemKey: string;
+  selectedToken: Token | undefined;
+  setSelectedToken: Dispatch<SetStateAction<Token | undefined>>;
+  token: Token;
+}) {
+  return (
+    <CommandItem
+      value={itemKey}
+      onSelect={() => {
+        setSelectedToken(token);
+      }}
+      className="flex gap-2 cursor-pointer text-xs"
+    >
+      <ChainTokenLogo token={token} />
+      {token.symbol}
+      <div className="ml-auto space-x-1">
+        <span>{token.amount}</span>
+        <span>(${token.value_usd?.toFixed(2)})</span>
+      </div>
+
+      <Check
+        className={cn(
+          "mr-2 h-4 w-4",
+          selectedToken?.id === itemKey ? "opacity-100" : "opacity-0"
+        )}
+      />
+    </CommandItem>
   );
 }
