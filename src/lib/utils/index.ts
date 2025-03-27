@@ -13,13 +13,16 @@ export const isTokenNative = (address: string) =>
   (address === "native" ||
     address.toLowerCase() === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 
-export const formatTokenAmount = (_amount: bigint | string, _decimals: number = 18) => {
+export const formatTokenAmount = (
+  _amount: bigint | string,
+  _decimals: number = 18
+) => {
   if (!_amount) return "0";
   if (typeof _amount === "string") {
     _amount = BigInt(_amount);
   }
   return formatNumber(formatUnits(_amount, _decimals));
-}
+};
 
 export const formatNumber = (number: number | string) => {
   if (typeof number === "string") {
@@ -57,7 +60,7 @@ export const formatNumber = (number: number | string) => {
 };
 
 export const tokenKey = (token: Token) =>
-  `${token.chain}:${token.address}`;
+  `${token.chain}:${token.address}:${token.symbol}`;
 
 export function removeTrailingSlash(url: string) {
   return url.endsWith("/") ? url.slice(0, -1) : url;
