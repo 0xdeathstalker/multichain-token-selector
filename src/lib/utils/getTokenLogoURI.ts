@@ -1,10 +1,10 @@
 import { Chains } from "@/constants/chains";
-import { isTokenETH } from ".";
+import { isTokenNative } from ".";
 import { getAddress } from "viem";
 
 export const getTokenLogoURI = (address: `0x${string}`, chain: Chains) => {
   if (!address) return "";
-  if (isTokenETH(address))
+  if (isTokenNative(address))
     if (TRUST_WALLET_EXCEPTIONS[chain])
       return `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/${TRUST_WALLET_EXCEPTIONS[chain]}/info/logo.png`;
     else

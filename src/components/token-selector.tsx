@@ -14,22 +14,25 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import useTokenBalances from "@/lib/hooks/useTokenBalances";
-import { cn } from "@/lib/utils";
+import { cn, formatNumber, tokenKey } from "@/lib/utils";
 import { Token } from "@/types";
 import { ChevronsUpDown } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import ChainTokenLogo from "./chain-token-logo";
-
-const ADDRESS = "0x8840BB0D5990161889388Ab0979EF2103cF0dAdF";
-
-export default function TokenSelector() {
+import { useEvmTokenBalances } from "@/lib/hooks/useTokenBalances";
+import { formatTokenAmount } from "@/lib/utils";
+export default function TokenSelector({ wallet }: { wallet: string }) {
   const [open, setOpen] = useState(false);
   const [selectedToken, setSelectedToken] = useState<Token>();
 
-  const { balances, isBalancesLoading } = useTokenBalances({
-    address: ADDRESS,
-  });
+  const { data, isLoading: isBalancesLoading } = useEvmTokenBalances(
+    wallet as `0x${string}`,
+    {
+      excludeSpamTokens: true,
+    }
+  );
+
+  const balances = data?.balances;
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -58,13 +61,14 @@ export default function TokenSelector() {
             <CommandGroup>
               {!isBalancesLoading &&
                 balances &&
-                Object.entries(balances).map(([, token], index) => {
+                balances.map((token) => {
+                  const key = tokenKey(token);
                   // TODO: remove this check once networks.json is defined
                   if (token.value_usd) {
                     return (
                       <TokenListItem
-                        key={`${token.address}-${token.symbol}-${index}`}
-                        itemKey={`${token.address}-${token.symbol}-${token.chain_id}`}
+                        key={key}
+                        itemKey={key}
                         token={token}
                         selectedToken={selectedToken}
                         setSelectedToken={setSelectedToken}
@@ -91,6 +95,8 @@ function TokenListItem({
   setSelectedToken: Dispatch<SetStateAction<Token | undefined>>;
   token: Token;
 }) {
+
+  const isSelected = selectedToken && (tokenKey(selectedToken) === itemKey);
   return (
     <CommandItem
       value={itemKey}
@@ -99,7 +105,7 @@ function TokenListItem({
       }}
       className={cn(
         "flex gap-2 cursor-pointer text-xs border",
-        selectedToken?.id === token.id
+        isSelected
           ? "border-border bg-secondary"
           : "border-transparent"
       )}
@@ -107,8 +113,8 @@ function TokenListItem({
       <ChainTokenLogo token={token} />
       {token.symbol}
       <div className="ml-auto space-x-1 font-geist-mono">
-        <span>{token.amount}</span>
-        <span>(${token.value_usd?.toFixed(2)})</span>
+        <span>{formatTokenAmount(BigInt(token.amount), token.decimals ?? 18)}</span>
+        <span>(${formatNumber(token.value_usd ?? "-")})</span>
       </div>
     </CommandItem>
   );
