@@ -14,12 +14,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn, tokenKey } from "@/lib/utils";
+import { cn, formatNumber, tokenKey } from "@/lib/utils";
 import { Token } from "@/types";
 import { ChevronsUpDown } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import ChainTokenLogo from "./chain-token-logo";
 import { useEvmTokenBalances } from "@/lib/hooks/useTokenBalances";
+import { formatTokenAmount } from "@/lib/utils";
 export default function TokenSelector({ wallet }: { wallet: string }) {
   const [open, setOpen] = useState(false);
   const [selectedToken, setSelectedToken] = useState<Token>();
@@ -60,7 +61,8 @@ export default function TokenSelector({ wallet }: { wallet: string }) {
             <CommandGroup>
               {!isBalancesLoading &&
                 balances &&
-                Object.entries(balances).map(([, token], index) => {
+                balances.map((token, index) => {
+                  const key = tokenKey(token);
                   // TODO: remove this check once networks.json is defined
                   if (token.value_usd) {
                     return (
@@ -111,8 +113,8 @@ function TokenListItem({
       <ChainTokenLogo token={token} />
       {token.symbol}
       <div className="ml-auto space-x-1 font-geist-mono">
-        <span>{token.amount}</span>
-        <span>(${token.value_usd?.toFixed(2)})</span>
+        <span>{formatTokenAmount(BigInt(token.amount), token.decimals ?? 18)}</span>
+        <span>(${formatNumber(token.value_usd ?? "-")})</span>
       </div>
     </CommandItem>
   );

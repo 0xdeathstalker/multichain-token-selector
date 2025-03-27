@@ -14,7 +14,7 @@ export default function Home() {
           onChange={(e) => setWallet(e.target.value)}
           placeholder="Enter your wallet address"
         />
-        <DuneProvider duneApiKey={process.env.DUNE_API_KEY ?? ''} >
+        <DuneProvider duneApiKey={process.env.NEXT_PUBLIC_DUNE_API_KEY ?? ''} >
           <TokenSelector wallet={wallet} />
         </DuneProvider>
       </main>
