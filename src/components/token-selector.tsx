@@ -17,7 +17,7 @@ import {
 import useTokenBalances from "@/lib/hooks/useTokenBalances";
 import { cn } from "@/lib/utils";
 import { Token } from "@/types";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { ChevronsUpDown } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import ChainTokenLogo from "./chain-token-logo";
 
@@ -64,7 +64,7 @@ export default function TokenSelector() {
                     return (
                       <TokenListItem
                         key={`${token.address}-${token.symbol}-${index}`}
-                        itemKey={`${token.address}-${token.symbol}`}
+                        itemKey={`${token.address}-${token.symbol}-${token.chain_id}`}
                         token={token}
                         selectedToken={selectedToken}
                         setSelectedToken={setSelectedToken}
@@ -97,7 +97,12 @@ function TokenListItem({
       onSelect={() => {
         setSelectedToken(token);
       }}
-      className="flex gap-2 cursor-pointer text-xs"
+      className={cn(
+        "flex gap-2 cursor-pointer text-xs border",
+        selectedToken?.id === token.id
+          ? "border-border bg-secondary"
+          : "border-transparent"
+      )}
     >
       <ChainTokenLogo token={token} />
       {token.symbol}
@@ -105,13 +110,6 @@ function TokenListItem({
         <span>{token.amount}</span>
         <span>(${token.value_usd?.toFixed(2)})</span>
       </div>
-
-      <Check
-        className={cn(
-          "mr-2 h-4 w-4",
-          selectedToken?.id === itemKey ? "opacity-100" : "opacity-0"
-        )}
-      />
     </CommandItem>
   );
 }
