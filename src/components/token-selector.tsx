@@ -51,18 +51,20 @@ export default function TokenSelector() {
         <Command className="max-h-[80svh]">
           <CommandInput placeholder="Search token..." className="text-xs" />
           <CommandList>
-            <CommandEmpty className="text-xs">No token found.</CommandEmpty>
+            <CommandEmpty className="text-xs text-center py-3">
+              No token found.
+            </CommandEmpty>
 
             <CommandGroup>
               {!isBalancesLoading &&
                 balances &&
-                Object.entries(balances).map(([key, token], index) => {
+                Object.entries(balances).map(([, token], index) => {
                   // TODO: remove this check once networks.json is defined
                   if (token.value_usd) {
                     return (
                       <TokenListItem
-                        key={`${key}-${index}`}
-                        itemKey={key}
+                        key={`${token.address}-${token.symbol}-${index}`}
+                        itemKey={`${token.address}-${token.symbol}`}
                         token={token}
                         selectedToken={selectedToken}
                         setSelectedToken={setSelectedToken}
