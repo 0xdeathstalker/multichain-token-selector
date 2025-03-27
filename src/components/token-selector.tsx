@@ -71,6 +71,7 @@ export default function TokenSelector({ wallet }: { wallet: string }) {
                         token={token}
                         selectedToken={selectedToken}
                         setSelectedToken={setSelectedToken}
+                        setOpen={setOpen}
                       />
                     );
                   }
@@ -88,6 +89,7 @@ function TokenListItem({
   selectedToken,
   setSelectedToken,
   token,
+  setOpen,
 }: {
   itemKey: string;
   selectedToken: Token | undefined;
@@ -101,6 +103,7 @@ function TokenListItem({
       value={itemKey}
       onSelect={() => {
         setSelectedToken(token);
+        setOpen(false);
       }}
       className={cn(
         "flex gap-2 cursor-pointer text-xs border",
