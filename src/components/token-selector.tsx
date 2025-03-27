@@ -21,15 +21,14 @@ import { Dispatch, SetStateAction, useState } from "react";
 import ChainTokenLogo from "./chain-token-logo";
 import { useEvmTokenBalances } from "@/lib/hooks/useTokenBalances";
 import { formatTokenAmount } from "@/lib/utils";
+
 export default function TokenSelector({ wallet }: { wallet: string }) {
   const [open, setOpen] = useState(false);
   const [selectedToken, setSelectedToken] = useState<Token>();
 
   const { data, isLoading: isBalancesLoading } = useEvmTokenBalances(
     wallet as `0x${string}`,
-    {
-      excludeSpamTokens: true,
-    }
+    { excludeSpamTokens: true }
   );
 
   const balances = data?.balances;
@@ -94,9 +93,9 @@ function TokenListItem({
   selectedToken: Token | undefined;
   setSelectedToken: Dispatch<SetStateAction<Token | undefined>>;
   token: Token;
+  setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-
-  const isSelected = selectedToken && (tokenKey(selectedToken) === itemKey);
+  const isSelected = selectedToken && tokenKey(selectedToken) === itemKey;
   return (
     <CommandItem
       value={itemKey}
@@ -105,16 +104,18 @@ function TokenListItem({
       }}
       className={cn(
         "flex gap-2 cursor-pointer text-xs border",
-        isSelected
-          ? "border-border bg-secondary"
-          : "border-transparent"
+        isSelected ? "border-border bg-secondary" : "border-transparent"
       )}
     >
       <ChainTokenLogo token={token} />
       {token.symbol}
-      <div className="ml-auto space-x-1 font-geist-mono">
-        <span>{formatTokenAmount(BigInt(token.amount), token.decimals ?? 18)}</span>
-        <span>(${formatNumber(token.value_usd ?? "-")})</span>
+      <div className="ml-auto flex items-center gap-1 font-geist-mono">
+        <span>
+          {formatTokenAmount(BigInt(token.amount), token.decimals ?? 18)}
+        </span>
+        <span className="max-w-[5rem] inline-flex items-center">
+          (<p className="truncate">${formatNumber(token.value_usd ?? "-")}</p>)
+        </span>
       </div>
     </CommandItem>
   );

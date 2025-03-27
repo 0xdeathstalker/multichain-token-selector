@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { Chains } from "@/constants/chains";
 import { getTokenLogoURI } from "@/lib/utils/getTokenLogoURI";
 import { Token } from "@/types";
@@ -7,7 +8,10 @@ const ChainTokenLogo = ({ token }: { token: Token }) => {
   return (
     <div className="relative bg-neutral-200 flex items-center justify-center rounded-3xl p-0.5">
       <img
-        src={getTokenLogoURI(token.address, token.chain as Chains)}
+        src={getTokenLogoURI(
+          token.address as `0x${string}`,
+          token.chain as Chains
+        )}
         alt=""
         width={20}
         height={20}
