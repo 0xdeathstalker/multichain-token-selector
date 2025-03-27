@@ -4,6 +4,8 @@ import TokenSelector from "@/components/token-selector";
 import { useState } from "react";
 import { DuneProvider } from "@/provider";
 import { env } from "@/env";
+import { Input } from "@/components/ui/input";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export default function Home() {
   const [wallet, setWallet] = useState<string>(
@@ -12,7 +14,8 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <input
+        <ThemeToggle />
+        <Input
           type="text"
           value={wallet}
           onChange={(e) => setWallet(e.target.value)}

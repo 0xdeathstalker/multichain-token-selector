@@ -5,6 +5,7 @@
 
 @theme {
   --font-geist-mono: "Geist Mono", "sans-serif";
+  --font-geist: "Geist", "sans-serif";
 }
 
 @theme inline {
