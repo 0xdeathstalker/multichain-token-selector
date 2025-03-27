@@ -61,14 +61,14 @@ export default function TokenSelector({ wallet }: { wallet: string }) {
             <CommandGroup>
               {!isBalancesLoading &&
                 balances &&
-                balances.map((token, index) => {
+                balances.map((token) => {
                   const key = tokenKey(token);
                   // TODO: remove this check once networks.json is defined
                   if (token.value_usd) {
                     return (
                       <TokenListItem
-                        key={`${token.address}-${token.symbol}-${index}`}
-                        itemKey={`${token.address}-${token.symbol}-${token.chain_id}`}
+                        key={key}
+                        itemKey={key}
                         token={token}
                         selectedToken={selectedToken}
                         setSelectedToken={setSelectedToken}
