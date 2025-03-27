@@ -21,6 +21,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import ChainTokenLogo from "./chain-token-logo";
 import { useEvmTokenBalances } from "@/lib/hooks/useTokenBalances";
 import { formatTokenAmount } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export default function TokenSelector({ wallet }: { wallet: string }) {
   const [open, setOpen] = useState(false);
@@ -53,30 +54,45 @@ export default function TokenSelector({ wallet }: { wallet: string }) {
         <Command className="max-h-[80svh]">
           <CommandInput placeholder="Search token..." className="text-xs" />
           <CommandList>
-            <CommandEmpty className="text-xs text-center py-3">
-              No token found.
-            </CommandEmpty>
+            {!isBalancesLoading && (
+              <CommandEmpty className="text-xs text-center py-3">
+                No token found.
+              </CommandEmpty>
+            )}
 
-            <CommandGroup>
-              {!isBalancesLoading &&
-                balances &&
-                balances.map((token) => {
-                  const key = tokenKey(token);
-                  // TODO: remove this check once networks.json is defined
-                  if (token.value_usd) {
-                    return (
-                      <TokenListItem
-                        key={key}
-                        itemKey={key}
-                        token={token}
-                        selectedToken={selectedToken}
-                        setSelectedToken={setSelectedToken}
-                        setOpen={setOpen}
-                      />
-                    );
-                  }
-                })}
-            </CommandGroup>
+            {isBalancesLoading ? (
+              <div className="p-2">
+                {Array.from({ length: 6 }).map((_, i) => (
+                  <div key={i} className="flex items-center gap-2 p-2">
+                    <Skeleton className="h-6 min-w-6 rounded-full" />
+                    <div className="w-full flex items-center justify-between">
+                      <Skeleton className="h-4 w-14" />
+                      <Skeleton className="h-4 w-24" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <CommandGroup>
+                {balances &&
+                  balances.map((token) => {
+                    const key = tokenKey(token);
+                    // TODO: remove this check once networks.json is defined
+                    if (token.value_usd) {
+                      return (
+                        <TokenListItem
+                          key={key}
+                          itemKey={key}
+                          token={token}
+                          selectedToken={selectedToken}
+                          setSelectedToken={setSelectedToken}
+                          setOpen={setOpen}
+                        />
+                      );
+                    }
+                  })}
+              </CommandGroup>
+            )}
           </CommandList>
         </Command>
       </PopoverContent>
