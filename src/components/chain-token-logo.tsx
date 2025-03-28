@@ -6,7 +6,7 @@ import React from "react";
 
 const ChainTokenLogo = ({ token }: { token: Token }) => {
   return (
-    <div className="relative bg-neutral-200 flex items-center justify-center rounded-3xl p-0.5">
+    <div className="relative dark:bg-neutral-600 bg-neutral-200 flex items-center justify-center rounded-3xl p-0.5">
       <img
         src={getTokenLogoURI(
           token.address as `0x${string}`,

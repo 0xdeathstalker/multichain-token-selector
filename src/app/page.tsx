@@ -2,7 +2,7 @@
 
 import TokenSelector from "@/components/token-selector";
 import { useState } from "react";
-import { DuneProvider } from "@/provider";
+import { DuneProvider } from "@/context/dune-provider";
 import { env } from "@/env";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";

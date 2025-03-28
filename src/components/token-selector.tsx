@@ -128,7 +128,7 @@ function TokenListItem({
     >
       <ChainTokenLogo token={token} />
       {token.symbol}
-      <div className="ml-auto flex items-center gap-1 font-geist-mono">
+      <div className="ml-auto flex items-center gap-1 font-mono">
         <span>
           {formatTokenAmount(BigInt(token.amount), token.decimals ?? 18)}
         </span>

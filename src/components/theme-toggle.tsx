@@ -28,7 +28,7 @@ export function ThemeToggle() {
         </Button>
       </PopoverTrigger>
       <PopoverContent
-        className="cursor-default max-w-40 p-1 text-sm font-geist"
+        className="cursor-default max-w-40 p-1 text-sm"
         align="end"
       >
         <div

@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { TokensParams, BalanceData, FetchError } from "@/types";
 import { fetchEvmBalances } from "@/lib/utils/duneApi";
 import { useDeepMemo } from "@/lib/hooks/useDeepMemo";
-import { useGetApiKey, useGetProxyUrl } from "@/provider";
+import { useGetApiKey, useGetProxyUrl } from "@/context/dune-provider";
 import { isAddress } from "viem";
 
 export const useEvmTokenBalances = (
