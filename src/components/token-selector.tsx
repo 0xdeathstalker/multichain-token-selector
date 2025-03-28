@@ -18,7 +18,7 @@ import { cn, formatNumber, tokenKey } from "@/lib/utils";
 import { Token } from "@/types";
 import { ChevronsUpDown } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
-import ChainTokenLogo from "./chain-token-logo";
+import { ChainTokenLogo } from "./chain-token-logo";
 import { useEvmTokenBalances } from "@/lib/hooks/useTokenBalances";
 import { formatTokenAmount } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";

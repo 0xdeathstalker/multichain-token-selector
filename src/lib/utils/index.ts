@@ -65,3 +65,7 @@ export const tokenKey = (token: Token) =>
 export function removeTrailingSlash(url: string) {
   return url.endsWith("/") ? url.slice(0, -1) : url;
 }
+
+export function capitalize(word: string) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}

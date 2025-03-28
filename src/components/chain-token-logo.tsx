@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { Chains } from "@/constants/chains";
+import { ChainIds, CHAINS, Chains } from "@/constants/chains";
 import { getTokenLogoURI } from "@/lib/utils/getTokenLogoURI";
 import { Token } from "@/types";
 import React from "react";
@@ -36,4 +36,22 @@ const ChainTokenLogo = ({ token }: { token: Token }) => {
   );
 };
 
-export default ChainTokenLogo;
+const ChainLogo = ({ chainId }: { chainId: ChainIds }) => {
+  return (
+    <div className="dark:bg-neutral-600 bg-neutral-200 rounded-3xl p-0.5">
+      <img
+        src={getChainImagePath(CHAINS[chainId])}
+        alt=""
+        width={20}
+        height={20}
+      />
+    </div>
+  );
+};
+
+function getChainImagePath(chainName: Chains) {
+  const img = chainName === "binance" ? "bnb" : chainName;
+  return `/images/chains/${img}.png`;
+}
+
+export { ChainTokenLogo, ChainLogo };

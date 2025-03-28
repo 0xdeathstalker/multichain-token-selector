@@ -6,6 +6,7 @@ import { DuneProvider } from "@/context/dune-provider";
 import { env } from "@/env";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/theme-toggle";
+import ChainAndTokenSelector from "@/components/chain-token-selector";
 
 export default function Home() {
   const [wallet, setWallet] = useState<string>(
@@ -23,6 +24,8 @@ export default function Home() {
         />
         <DuneProvider duneApiKey={env.NEXT_PUBLIC_DUNE_API_KEY ?? ""}>
           <TokenSelector wallet={wallet} />
+
+          <ChainAndTokenSelector wallet={wallet} />
         </DuneProvider>
       </main>
     </div>
