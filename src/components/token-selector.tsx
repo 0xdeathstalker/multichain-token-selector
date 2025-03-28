@@ -51,7 +51,7 @@ export default function TokenSelector({ wallet }: { wallet: string }) {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[calc(100vw_-_4rem)] sm:w-64 p-0">
-        <Command className="max-h-[80svh]">
+        <Command className="max-h-[45svh]">
           <CommandInput placeholder="Search token..." className="text-xs" />
           <CommandList>
             {!isBalancesLoading && (
