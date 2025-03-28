@@ -24,6 +24,7 @@ export default function Home() {
           <TokenSelector
             value={token}
             onValueChange={setToken}
+            wallet={wallet}
           />
         </DuneProvider>
       </main>
