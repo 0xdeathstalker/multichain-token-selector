@@ -29,16 +29,22 @@ import {
 } from "@/lib/utils";
 import { Token } from "@/types";
 import { ChevronsUpDown } from "lucide-react";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
-const ChainAndTokenSelector: React.FC<{ wallet: string }> = (props) => {
+interface ChainAndTokenSelectorProps {
+  wallet: string;
+  token: Token | undefined;
+  onTokenChange: Dispatch<SetStateAction<Token | undefined>>;
+  chain: ChainIds | undefined;
+  setChain: Dispatch<SetStateAction<ChainIds | undefined>>;
+}
+
+const ChainAndTokenSelector: React.FC<ChainAndTokenSelectorProps> = (props) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [selectedChain, setSelectedChain] = useState<ChainIds>("1");
-  const [selectedToken, setSelectedToken] = useState<Token>();
 
   const { data, isLoading: isBalancesLoading } = useEvmTokenBalances(
     props.wallet as `0x${string}`,
-    { excludeSpamTokens: true }
+    { excludeSpamTokens: true, chainIds: props.chain }
   );
   const balances = data?.balances;
 
@@ -54,8 +60,8 @@ const ChainAndTokenSelector: React.FC<{ wallet: string }> = (props) => {
           className="w-[200px] justify-between text-xs"
         >
           <div className="inline-flex items-center gap-2">
-            {selectedToken?.address && <ChainTokenLogo token={selectedToken} />}
-            {selectedToken ? selectedToken.symbol : "Select token..."}
+            {props.token?.address && <ChainTokenLogo token={props.token} />}
+            {props.token ? props.token.symbol : "Select token..."}
           </div>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -67,15 +73,16 @@ const ChainAndTokenSelector: React.FC<{ wallet: string }> = (props) => {
         <div className="flex items-center gap-3">
           <ChainSelection
             allowedChains={allowedChains}
-            selectedChain={selectedChain}
-            setSelectedChain={setSelectedChain}
+            selectedChain={props.chain}
+            setSelectedChain={props.setChain}
           />
 
           <TokenSelection
             balances={balances}
             isBalancesLoading={isBalancesLoading}
-            selectedToken={selectedToken}
-            setSelectedToken={setSelectedToken}
+            selectedToken={props.token}
+            setSelectedToken={props.onTokenChange}
+            setSelectedChain={props.setChain}
             setOpen={setOpen}
           />
         </div>
@@ -86,9 +93,26 @@ const ChainAndTokenSelector: React.FC<{ wallet: string }> = (props) => {
 
 const ChainSelection: React.FC<{
   allowedChains: ChainIds[];
-  selectedChain: ChainIds;
-  setSelectedChain: Dispatch<SetStateAction<ChainIds>>;
+  selectedChain: ChainIds | undefined;
+  setSelectedChain: Dispatch<SetStateAction<ChainIds | undefined>>;
 }> = ({ allowedChains, selectedChain, setSelectedChain }) => {
+  useEffect(() => {
+    if (selectedChain) {
+      // a small delay to ensure the dialog is fully rendered
+      setTimeout(() => {
+        const element = document.querySelector(
+          `[data-chain-id="${selectedChain}"]`
+        );
+        if (element) {
+          element.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+          });
+        }
+      }, 100);
+    }
+  }, [selectedChain]);
+
   return (
     <Command className="min-h-[340px] max-h-[45svh] bg-transparent border">
       <CommandInput placeholder="Search chain..." className="text-xs" />
@@ -102,6 +126,7 @@ const ChainSelection: React.FC<{
             <CommandItem
               key={chainId}
               value={`${CHAINS[chainId]}-${chainId}`}
+              data-chain-id={chainId}
               onSelect={() => {
                 setSelectedChain(chainId);
               }}
@@ -127,12 +152,14 @@ const TokenSelection: React.FC<{
   balances: Token[] | undefined;
   selectedToken: Token | undefined;
   setSelectedToken: Dispatch<SetStateAction<Token | undefined>>;
+  setSelectedChain: Dispatch<SetStateAction<ChainIds | undefined>>;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }> = ({
   isBalancesLoading,
   balances,
   selectedToken,
   setSelectedToken,
+  setSelectedChain,
   setOpen,
 }) => {
   return (
@@ -147,7 +174,7 @@ const TokenSelection: React.FC<{
 
         {isBalancesLoading ? (
           <div className="p-2">
-            {Array.from({ length: 9 }).map((_, i) => (
+            {Array.from({ length: 7 }).map((_, i) => (
               <div key={i} className="flex items-center gap-2 p-2">
                 <Skeleton className="h-6 min-w-6 rounded-full" />
                 <div className="w-full flex items-center justify-between">
@@ -169,6 +196,7 @@ const TokenSelection: React.FC<{
                     token={token}
                     selectedToken={selectedToken}
                     setSelectedToken={setSelectedToken}
+                    setSelectedChain={setSelectedChain}
                     setOpen={setOpen}
                   />
                 );
@@ -184,16 +212,25 @@ const TokenListItem: React.FC<{
   itemKey: string;
   selectedToken: Token | undefined;
   setSelectedToken: Dispatch<SetStateAction<Token | undefined>>;
+  setSelectedChain: Dispatch<SetStateAction<ChainIds | undefined>>;
   token: Token;
   setOpen: Dispatch<SetStateAction<boolean>>;
-}> = ({ itemKey, selectedToken, setSelectedToken, token }) => {
+}> = ({
+  itemKey,
+  selectedToken,
+  setSelectedToken,
+  setSelectedChain,
+  token,
+  setOpen,
+}) => {
   const isSelected = selectedToken && tokenKey(selectedToken) === itemKey;
   return (
     <CommandItem
       value={itemKey}
       onSelect={() => {
         setSelectedToken(token);
-        // setOpen(false);
+        setSelectedChain(token.chain_id.toString() as ChainIds);
+        setOpen(false);
       }}
       className={cn(
         "flex gap-2 cursor-pointer text-xs border",
