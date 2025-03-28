@@ -17,26 +17,21 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ChainIds, CHAINS, MAINNET_SUPPORTED_CHAINS } from "@/constants/chains";
+import { ChainIds, CHAINS } from "@/constants/chains";
 import { useEvmTokenBalances } from "@/lib/hooks/useTokenBalances";
 import {
   capitalize,
   cn,
   formatNumber,
   formatTokenAmount,
+  getChains,
   tokenKey,
 } from "@/lib/utils";
 import { Token } from "@/types";
 import { ChevronsUpDown } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 
-function getChains() {
-  return Object.values(MAINNET_SUPPORTED_CHAINS).sort((c1, c2) =>
-    c1[0] < c2[0] ? -1 : 1
-  );
-}
-
-const ChainAndTokenSelector = (props: { wallet: string }) => {
+const ChainAndTokenSelector: React.FC<{ wallet: string }> = (props) => {
   const [open, setOpen] = useState<boolean>(false);
   const [selectedChain, setSelectedChain] = useState<ChainIds>("1");
   const [selectedToken, setSelectedToken] = useState<Token>();
@@ -89,17 +84,11 @@ const ChainAndTokenSelector = (props: { wallet: string }) => {
   );
 };
 
-export default ChainAndTokenSelector;
-
-const ChainSelection = ({
-  allowedChains,
-  selectedChain,
-  setSelectedChain,
-}: {
+const ChainSelection: React.FC<{
   allowedChains: ChainIds[];
   selectedChain: ChainIds;
   setSelectedChain: Dispatch<SetStateAction<ChainIds>>;
-}) => {
+}> = ({ allowedChains, selectedChain, setSelectedChain }) => {
   return (
     <Command className="min-h-[340px] max-h-[45svh] bg-transparent border">
       <CommandInput placeholder="Search chain..." className="text-xs" />
@@ -133,18 +122,18 @@ const ChainSelection = ({
   );
 };
 
-const TokenSelection = ({
-  isBalancesLoading,
-  balances,
-  selectedToken,
-  setSelectedToken,
-  setOpen,
-}: {
+const TokenSelection: React.FC<{
   isBalancesLoading: boolean;
   balances: Token[] | undefined;
   selectedToken: Token | undefined;
   setSelectedToken: Dispatch<SetStateAction<Token | undefined>>;
   setOpen: Dispatch<SetStateAction<boolean>>;
+}> = ({
+  isBalancesLoading,
+  balances,
+  selectedToken,
+  setSelectedToken,
+  setOpen,
 }) => {
   return (
     <Command className="min-h-[340px] max-h-[45svh] bg-transparent border">
@@ -191,19 +180,13 @@ const TokenSelection = ({
   );
 };
 
-const TokenListItem = ({
-  itemKey,
-  selectedToken,
-  setSelectedToken,
-  token,
-}: // setOpen,
-{
+const TokenListItem: React.FC<{
   itemKey: string;
   selectedToken: Token | undefined;
   setSelectedToken: Dispatch<SetStateAction<Token | undefined>>;
   token: Token;
   setOpen: Dispatch<SetStateAction<boolean>>;
-}) => {
+}> = ({ itemKey, selectedToken, setSelectedToken, token }) => {
   const isSelected = selectedToken && tokenKey(selectedToken) === itemKey;
   return (
     <CommandItem
@@ -230,3 +213,5 @@ const TokenListItem = ({
     </CommandItem>
   );
 };
+
+export default ChainAndTokenSelector;

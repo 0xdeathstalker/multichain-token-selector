@@ -14,6 +14,7 @@ export default function Home() {
     "0x8840BB0D5990161889388Ab0979EF2103cF0dAdF"
   );
   const [token, setToken] = useState<Token>();
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
@@ -29,6 +30,7 @@ export default function Home() {
             value={token}
             onValueChange={setToken}
             wallet={wallet}
+            excludeSpamTokens
           />
 
           <ChainAndTokenSelector wallet={wallet} />

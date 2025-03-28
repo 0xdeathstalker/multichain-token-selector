@@ -3,6 +3,7 @@ import { clsx, type ClassValue } from "clsx";
 import { formatUnits } from "viem";
 import { twMerge } from "tailwind-merge";
 import numeral from "numeral";
+import { MAINNET_SUPPORTED_CHAINS } from "@/constants/chains";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -68,4 +69,10 @@ export function removeTrailingSlash(url: string) {
 
 export function capitalize(word: string) {
   return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+export function getChains() {
+  return Object.values(MAINNET_SUPPORTED_CHAINS).sort((c1, c2) =>
+    c1[0] < c2[0] ? -1 : 1
+  );
 }

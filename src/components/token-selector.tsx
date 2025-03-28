@@ -37,7 +37,15 @@ interface TokenSelectorProps {
   className?: string;
 }
 
-const TokenSelector: React.FC<TokenSelectorProps> = (props: TokenSelectorProps) => {
+interface TokenListItemProps {
+  itemKey: string;
+  selectedToken: Token | undefined;
+  setSelectedToken: Dispatch<SetStateAction<Token | undefined>>;
+  token: Token;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+const TokenSelector: React.FC<TokenSelectorProps> = (props) => {
   const [open, setOpen] = useState(false);
 
   const { data, isLoading: isBalancesLoading } = useEvmTokenBalances(
@@ -111,21 +119,15 @@ const TokenSelector: React.FC<TokenSelectorProps> = (props: TokenSelectorProps) 
       </PopoverContent>
     </Popover>
   );
-}
+};
 
-function TokenListItem({
+const TokenListItem: React.FC<TokenListItemProps> = ({
   itemKey,
   selectedToken,
   setSelectedToken,
   token,
   setOpen,
-}: {
-  itemKey: string;
-  selectedToken: Token | undefined;
-  setSelectedToken: Dispatch<SetStateAction<Token | undefined>>;
-  token: Token;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-}) {
+}) => {
   const isSelected = selectedToken && tokenKey(selectedToken) === itemKey;
   return (
     <CommandItem
@@ -151,6 +153,6 @@ function TokenListItem({
       </div>
     </CommandItem>
   );
-}
+};
 
 export default TokenSelector;
