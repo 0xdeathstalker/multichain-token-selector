@@ -23,13 +23,26 @@ import { useEvmTokenBalances } from "@/lib/hooks/useTokenBalances";
 import { formatTokenAmount } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function TokenSelector({ wallet }: { wallet: string }) {
+interface TokenSelectorProps {
+  value?: Token;
+  defaultValue?: Token;
+  onValueChange: Dispatch<SetStateAction<Token | undefined>>;
+  name?: string;
+  disabled?: boolean;
+  required?: boolean;
+  form?: string;
+  wallet?: string;
+  excludeSpamTokens?: boolean;
+  excludeTokens?: string[];
+  className?: string;
+}
+
+const TokenSelector: React.FC<TokenSelectorProps> = (props: TokenSelectorProps) => {
   const [open, setOpen] = useState(false);
-  const [selectedToken, setSelectedToken] = useState<Token>();
 
   const { data, isLoading: isBalancesLoading } = useEvmTokenBalances(
-    wallet as `0x${string}`,
-    { excludeSpamTokens: true }
+    props.wallet as `0x${string}`,
+    { excludeSpamTokens: props.excludeSpamTokens }
   );
 
   const balances = data?.balances;
@@ -44,8 +57,8 @@ export default function TokenSelector({ wallet }: { wallet: string }) {
           className="w-[200px] justify-between text-xs"
         >
           <div className="inline-flex items-center gap-2">
-            {selectedToken?.address && <ChainTokenLogo token={selectedToken} />}
-            {selectedToken ? selectedToken.symbol : "Select token..."}
+            {props.value?.address && <ChainTokenLogo token={props.value} />}
+            {props.value ? props.value.symbol : "Select token..."}
           </div>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -84,8 +97,8 @@ export default function TokenSelector({ wallet }: { wallet: string }) {
                           key={key}
                           itemKey={key}
                           token={token}
-                          selectedToken={selectedToken}
-                          setSelectedToken={setSelectedToken}
+                          selectedToken={props.value}
+                          setSelectedToken={props.onValueChange}
                           setOpen={setOpen}
                         />
                       );
@@ -139,3 +152,5 @@ function TokenListItem({
     </CommandItem>
   );
 }
+
+export default TokenSelector;
