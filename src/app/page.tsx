@@ -43,6 +43,7 @@ export default function Home() {
             onTokenChange={setToken}
             chain={chain}
             setChain={setChain}
+            excludeSpamTokens
           />
         </DuneProvider>
       </main>

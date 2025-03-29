@@ -16,8 +16,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ChainIds, CHAINS } from "@/constants/chains";
+import { useMediaQuery } from "@/lib/hooks/useMediaQuery";
 import { useEvmTokenBalances } from "@/lib/hooks/useTokenBalances";
 import {
   capitalize,
@@ -31,7 +40,6 @@ import {
 import { Token } from "@/types";
 import { ChevronsUpDown } from "lucide-react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { Separator } from "@/components/ui/separator";
 
 interface ChainAndTokenSelectorProps {
   token?: Token;
@@ -50,7 +58,9 @@ interface ChainAndTokenSelectorProps {
 }
 
 const ChainAndTokenSelector: React.FC<ChainAndTokenSelectorProps> = (props) => {
+  const isDesktop = useMediaQuery("(min-width: 640px)");
   const [open, setOpen] = useState<boolean>(false);
+  const [chainDrawerOpen, setChainDrawerOpen] = useState<boolean>(false);
 
   const { data, isLoading: isBalancesLoading } = useEvmTokenBalances(
     props.wallet as `0x${string}`,
@@ -60,9 +70,53 @@ const ChainAndTokenSelector: React.FC<ChainAndTokenSelectorProps> = (props) => {
 
   const allowedChains = getChains();
 
+  if (isDesktop) {
+    return (
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="w-[200px] justify-between text-xs"
+          >
+            <div className="inline-flex items-center gap-2">
+              {props.token?.address && <ChainTokenLogo token={props.token} />}
+              {props.token ? props.token.symbol : "Select token..."}
+            </div>
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </DialogTrigger>
+
+        <DialogContent className="sm:max-w-2xl">
+          <DialogTitle className="text-sm">Select a token</DialogTitle>
+
+          <div className="flex items-center gap-5">
+            <ChainSelection
+              allowedChains={allowedChains}
+              selectedChain={props.chain}
+              setSelectedChain={props.setChain}
+            />
+
+            <Separator orientation="vertical" />
+
+            <TokenSelection
+              balances={balances}
+              isBalancesLoading={isBalancesLoading}
+              selectedToken={props.token}
+              setSelectedToken={props.onTokenChange}
+              setSelectedChain={props.setChain}
+              setOpen={setOpen}
+            />
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
         <Button
           variant="outline"
           role="combobox"
@@ -75,20 +129,76 @@ const ChainAndTokenSelector: React.FC<ChainAndTokenSelectorProps> = (props) => {
           </div>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
-      </DialogTrigger>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <div className="flex items-center justify-between">
+            <DrawerTitle>Select a token</DrawerTitle>
 
-      <DialogContent className="sm:max-w-2xl">
-        <DialogTitle className="text-sm">Select a token</DialogTitle>
+            <Drawer open={chainDrawerOpen} onOpenChange={setChainDrawerOpen}>
+              <DrawerTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={open}
+                  className="justify-between text-xs"
+                >
+                  {props.chain ? (
+                    <ChainLogo chainId={props.chain} />
+                  ) : (
+                    "Select a chain..."
+                  )}
+                  <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                </Button>
+              </DrawerTrigger>
 
-        <div className="flex items-center gap-5">
-          <ChainSelection
-            allowedChains={allowedChains}
-            selectedChain={props.chain}
-            setSelectedChain={props.setChain}
-          />
+              <DrawerContent>
+                <DrawerHeader>
+                  <DrawerTitle>Select a chain</DrawerTitle>
+                </DrawerHeader>
 
-          <Separator orientation="vertical" />
+                <div className="px-4 pb-4">
+                  <Command className="min-h-[340px] max-h-[45svh] bg-transparent border">
+                    <CommandInput
+                      placeholder="Search chain..."
+                      className="text-xs"
+                    />
+                    <CommandList>
+                      <CommandEmpty className="text-xs text-center py-3">
+                        No chain found.
+                      </CommandEmpty>
 
+                      <CommandGroup>
+                        {allowedChains.map((chainId) => (
+                          <CommandItem
+                            key={chainId}
+                            value={`${CHAINS[chainId]}-${chainId}`}
+                            data-chain-id={chainId}
+                            onSelect={() => {
+                              props.setChain(chainId);
+                              setChainDrawerOpen(false);
+                            }}
+                            className={cn(
+                              "text-xs border",
+                              props.chain === chainId
+                                ? "border-border bg-secondary"
+                                : "border-transparent"
+                            )}
+                          >
+                            <ChainLogo chainId={chainId} />
+                            {capitalize(removeChar(CHAINS[chainId]))}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </div>
+              </DrawerContent>
+            </Drawer>
+          </div>
+        </DrawerHeader>
+
+        <div className="px-4 pb-4">
           <TokenSelection
             balances={balances}
             isBalancesLoading={isBalancesLoading}
@@ -98,8 +208,15 @@ const ChainAndTokenSelector: React.FC<ChainAndTokenSelectorProps> = (props) => {
             setOpen={setOpen}
           />
         </div>
-      </DialogContent>
-    </Dialog>
+
+        {/* <DrawerFooter>
+          <Button>Submit</Button>
+          <DrawerClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DrawerClose>
+        </DrawerFooter> */}
+      </DrawerContent>
+    </Drawer>
   );
 };
 
