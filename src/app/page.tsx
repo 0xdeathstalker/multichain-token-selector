@@ -2,7 +2,7 @@
 
 import ChainAndTokenSelector from "@/components/chain-token-selector";
 import { ThemeToggle } from "@/components/theme-toggle";
-import TokenSelector from "@/components/token-selector";
+// import TokenSelector from "@/components/token-selector";
 import { Input } from "@/components/ui/input";
 import { ChainIds } from "@/constants/chains";
 import { DuneProvider } from "@/context/dune-provider";
@@ -30,12 +30,12 @@ export default function Home() {
         />
 
         <DuneProvider duneApiKey={env.NEXT_PUBLIC_DUNE_API_KEY ?? ""}>
-          <TokenSelector
+          {/* <TokenSelector
             value={token}
             onValueChange={setToken}
             wallet={wallet}
             excludeSpamTokens
-          />
+          /> */}
 
           <ChainAndTokenSelector
             wallet={wallet}

@@ -25,11 +25,13 @@ import {
   formatNumber,
   formatTokenAmount,
   getChains,
+  removeChar,
   tokenKey,
 } from "@/lib/utils";
 import { Token } from "@/types";
 import { ChevronsUpDown } from "lucide-react";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Separator } from "@/components/ui/separator";
 
 interface ChainAndTokenSelectorProps {
   wallet: string;
@@ -67,15 +69,17 @@ const ChainAndTokenSelector: React.FC<ChainAndTokenSelectorProps> = (props) => {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-xl">
+      <DialogContent className="sm:max-w-2xl">
         <DialogTitle className="text-sm">Select a token</DialogTitle>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-5">
           <ChainSelection
             allowedChains={allowedChains}
             selectedChain={props.chain}
             setSelectedChain={props.setChain}
           />
+
+          <Separator orientation="vertical" />
 
           <TokenSelection
             balances={balances}
@@ -114,7 +118,7 @@ const ChainSelection: React.FC<{
   }, [selectedChain]);
 
   return (
-    <Command className="min-h-[340px] max-h-[45svh] bg-transparent border">
+    <Command className="max-w-48 min-h-[340px] max-h-[45svh] bg-transparent border">
       <CommandInput placeholder="Search chain..." className="text-xs" />
       <CommandList>
         <CommandEmpty className="text-xs text-center py-3">
@@ -138,7 +142,7 @@ const ChainSelection: React.FC<{
               )}
             >
               <ChainLogo chainId={chainId} />
-              {capitalize(CHAINS[chainId])}
+              {capitalize(removeChar(CHAINS[chainId]))}
             </CommandItem>
           ))}
         </CommandGroup>
