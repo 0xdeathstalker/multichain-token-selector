@@ -34,11 +34,19 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 
 interface ChainAndTokenSelectorProps {
-  wallet: string;
-  token: Token | undefined;
+  token?: Token;
+  defaultToken?: Token;
   onTokenChange: Dispatch<SetStateAction<Token | undefined>>;
+  name?: string;
+  disabled?: boolean;
+  required?: boolean;
+  form?: string;
+  wallet?: string;
+  excludeSpamTokens?: boolean;
+  excludeTokens?: string[];
   chain: ChainIds | undefined;
   setChain: Dispatch<SetStateAction<ChainIds | undefined>>;
+  className?: string;
 }
 
 const ChainAndTokenSelector: React.FC<ChainAndTokenSelectorProps> = (props) => {
@@ -46,7 +54,7 @@ const ChainAndTokenSelector: React.FC<ChainAndTokenSelectorProps> = (props) => {
 
   const { data, isLoading: isBalancesLoading } = useEvmTokenBalances(
     props.wallet as `0x${string}`,
-    { excludeSpamTokens: true, chainIds: props.chain }
+    { excludeSpamTokens: props.excludeSpamTokens, chainIds: props.chain }
   );
   const balances = data?.balances;
 
