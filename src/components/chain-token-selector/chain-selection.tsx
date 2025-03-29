@@ -46,7 +46,10 @@ const ChainSelection: React.FC<ChainSelectionProps> = ({
   }, [selectedChain]);
 
   return (
-    <Command className="max-w-48 min-h-[340px] max-h-[45svh] bg-transparent border">
+    <Command
+      defaultValue="-"
+      className="max-w-48 min-h-[340px] max-h-[45svh] bg-transparent border"
+    >
       <CommandInput placeholder="Search chain..." className="text-xs" />
       <CommandList>
         <CommandEmpty className="text-xs text-center py-3">
@@ -110,7 +113,10 @@ const ChainSelectionDrawer: React.FC<ChainSelectionDrawerProps> = ({
         </DrawerHeader>
 
         <div className="px-4 pb-4">
-          <Command className="min-h-[340px] max-h-[45svh] bg-transparent border">
+          <Command
+            defaultValue="-"
+            className="min-h-[340px] max-h-[45svh] bg-transparent border"
+          >
             <CommandInput placeholder="Search chain..." className="text-xs" />
             <CommandList>
               <CommandEmpty className="text-xs text-center py-3">

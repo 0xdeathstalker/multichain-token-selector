@@ -1,18 +1,18 @@
 "use client";
 
-import React from "react";
+import { ChainTokenLogo } from "@/components/chain-token-logo";
 import {
   Command,
-  CommandInput,
-  CommandList,
   CommandEmpty,
   CommandGroup,
+  CommandInput,
   CommandItem,
+  CommandList,
 } from "@/components/ui/command";
-import { TokenListItemProps, TokenSelectionProps } from "./types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn, formatNumber, formatTokenAmount, tokenKey } from "@/lib/utils";
-import { ChainTokenLogo } from "@/components/chain-token-logo";
+import React from "react";
+import { TokenListItemProps, TokenSelectionProps } from "./types";
 
 const TokenSelection: React.FC<TokenSelectionProps> = ({
   isBalancesLoading,
@@ -23,7 +23,10 @@ const TokenSelection: React.FC<TokenSelectionProps> = ({
   setOpen,
 }) => {
   return (
-    <Command className="min-h-[340px] max-h-[45svh] bg-transparent border">
+    <Command
+      defaultValue={"-"}
+      className="min-h-[340px] max-h-[45svh] bg-transparent border"
+    >
       <CommandInput placeholder="Search token..." className="text-xs" />
       <CommandList>
         {!isBalancesLoading && (
