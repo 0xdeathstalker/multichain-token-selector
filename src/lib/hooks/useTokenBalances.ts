@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { TokensParams, BalanceData, FetchError } from "@/types";
-import { fetchEvmBalances } from "@/lib/utils/duneApi";
+import { CHAINS } from "@/constants/chains";
+import { useGetApiKey, useGetProxyUrl } from "@/context/dune-provider";
 import { useDeepMemo } from "@/lib/hooks/useDeepMemo";
-import { useGetApiKey, useGetProxyUrl } from "@/provider";
+import { fetchEvmBalances } from "@/lib/utils/duneApi";
+import { BalanceData, FetchError, TokensParams } from "@/types";
 import { isAddress } from "viem";
 
 export const useEvmTokenBalances = (
@@ -61,6 +62,15 @@ export const useEvmTokenBalances = (
         apiKey,
         proxyUrl
       );
+
+      for (const token of result.balances) {
+        if (token.chain === "avalanche_c") {
+          token.chain = CHAINS[token.chain_id];
+        }
+        if (token.chain === "zkevm") {
+          token.chain = CHAINS[token.chain_id];
+        }
+      }
 
       setState((prevState) => ({
         ...prevState,
