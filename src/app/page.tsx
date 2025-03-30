@@ -3,7 +3,6 @@
 import ChainSelector from "@/components/chain-token-selector/chain-selector";
 import TokenSelector from "@/components/token-selector";
 import { ThemeToggle } from "@/components/theme-toggle";
-// import TokenSelector from "@/components/token-selector";
 import { Input } from "@/components/ui/input";
 import { ChainIds } from "@/constants/chains";
 import { DuneProvider } from "@/context/dune-provider";
@@ -13,7 +12,7 @@ import { getChains } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
-const ADDRESS = "0x8840BB0D5990161889388Ab0979EF2103cF0dAdF";
+const ADDRESS = "0xd8da6bf26964af9d7eed9e03e53415d37aa96045";
 
 export default function Home() {
   const [wallet, setWallet] = useState<string>(ADDRESS);

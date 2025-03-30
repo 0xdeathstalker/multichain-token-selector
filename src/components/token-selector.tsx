@@ -53,7 +53,10 @@ const TokenSelector: React.FC<TokenSelectorProps> = (props) => {
 
   const { data, isLoading: isBalancesLoading } = useEvmTokenBalances(
     props.wallet as `0x${string}`,
-    { excludeSpamTokens: props.excludeSpamTokens }
+    {
+      excludeSpamTokens: props.excludeSpamTokens,
+      chainIds: props.chains ? props.chains[0] : undefined,
+    }
   );
   const balances = data?.balances;
 
