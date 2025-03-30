@@ -29,16 +29,16 @@ import {
 
 const ChainSelection: React.FC<ChainSelectionProps> = ({
   allowedChains,
-  selectedChain,
-  setSelectedChain,
+  selectedChainId,
+  setSelectedChainId,
   setDialogOpen,
 }) => {
   useEffect(() => {
-    if (selectedChain) {
+    if (selectedChainId) {
       // a small delay to ensure the dialog is fully rendered
       setTimeout(() => {
         const element = document.querySelector(
-          `[data-chain-id="${selectedChain}"]`
+          `[data-chain-id="${selectedChainId}"]`
         );
         if (element) {
           element.scrollIntoView({
@@ -48,7 +48,7 @@ const ChainSelection: React.FC<ChainSelectionProps> = ({
         }
       }, 100);
     }
-  }, [selectedChain]);
+  }, [selectedChainId]);
 
   return (
     <Command
@@ -66,8 +66,8 @@ const ChainSelection: React.FC<ChainSelectionProps> = ({
             <ChainListItem
               key={chainId}
               chainId={chainId}
-              selectedChain={selectedChain}
-              setSelectedChain={setSelectedChain}
+              selectedChainId={selectedChainId}
+              setSelectedChainId={setSelectedChainId}
               setOpen={setDialogOpen}
             />
           ))}
@@ -80,8 +80,8 @@ const ChainSelection: React.FC<ChainSelectionProps> = ({
 const ChainSelectionDrawer: React.FC<ChainSelectionDrawerProps> = ({
   chainDrawerOpen,
   setChainDrawerOpen,
-  selectedChain,
-  setSelectedChain,
+  selectedChainId,
+  setSelectedChainId,
   allowedChains,
 }) => {
   return (
@@ -93,8 +93,8 @@ const ChainSelectionDrawer: React.FC<ChainSelectionDrawerProps> = ({
           aria-expanded={chainDrawerOpen}
           className="justify-between text-xs"
         >
-          {selectedChain ? (
-            <ChainLogo chainId={selectedChain} />
+          {selectedChainId ? (
+            <ChainLogo chainId={selectedChainId} />
           ) : (
             "Select a chain..."
           )}
@@ -123,8 +123,8 @@ const ChainSelectionDrawer: React.FC<ChainSelectionDrawerProps> = ({
                   <ChainListItem
                     key={chainId}
                     chainId={chainId}
-                    selectedChain={selectedChain}
-                    setSelectedChain={setSelectedChain}
+                    selectedChainId={selectedChainId}
+                    setSelectedChainId={setSelectedChainId}
                     setOpen={setChainDrawerOpen}
                   />
                 ))}
@@ -139,8 +139,8 @@ const ChainSelectionDrawer: React.FC<ChainSelectionDrawerProps> = ({
 
 const ChainListItem: React.FC<ChainListItemProps> = ({
   chainId,
-  selectedChain,
-  setSelectedChain,
+  selectedChainId,
+  setSelectedChainId,
   setOpen,
 }) => {
   return (
@@ -149,12 +149,12 @@ const ChainListItem: React.FC<ChainListItemProps> = ({
       value={`${CHAINS[chainId]}-${chainId}`}
       data-chain-id={chainId}
       onSelect={() => {
-        setSelectedChain(chainId);
+        setSelectedChainId(chainId);
         setOpen(false);
       }}
       className={cn(
         "text-xs border",
-        selectedChain?.toString() === chainId
+        selectedChainId?.toString() === chainId
           ? "border-border bg-secondary"
           : "border-transparent"
       )}

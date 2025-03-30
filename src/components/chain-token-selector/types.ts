@@ -4,30 +4,38 @@ import * as React from "react";
 
 export interface ChainSelectorProps {
   allowedChains: ChainIds[];
-  selectedChain?: ChainIds;
-  setSelectedChain: React.Dispatch<React.SetStateAction<ChainIds | undefined>>;
+  selectedChainId?: ChainIds;
+  setSelectedChainId: React.Dispatch<
+    React.SetStateAction<ChainIds | undefined>
+  >;
   className?: string;
 }
 
 export interface ChainSelectionProps {
   allowedChains: ChainIds[];
-  selectedChain: ChainIds | undefined;
-  setSelectedChain: React.Dispatch<React.SetStateAction<ChainIds | undefined>>;
+  selectedChainId: ChainIds | undefined;
+  setSelectedChainId: React.Dispatch<
+    React.SetStateAction<ChainIds | undefined>
+  >;
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface ChainSelectionDrawerProps {
   chainDrawerOpen: boolean;
   setChainDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedChain: ChainIds | undefined;
-  setSelectedChain: React.Dispatch<React.SetStateAction<ChainIds | undefined>>;
+  selectedChainId: ChainIds | undefined;
+  setSelectedChainId: React.Dispatch<
+    React.SetStateAction<ChainIds | undefined>
+  >;
   allowedChains: ChainIds[];
 }
 
 export interface ChainListItemProps {
   chainId: ChainIds;
-  selectedChain: ChainIds | undefined;
-  setSelectedChain: React.Dispatch<React.SetStateAction<ChainIds | undefined>>;
+  selectedChainId: ChainIds | undefined;
+  setSelectedChainId: React.Dispatch<
+    React.SetStateAction<ChainIds | undefined>
+  >;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -40,7 +48,7 @@ export interface TokenSelectorProps {
   required?: boolean;
   form?: string;
   wallet?: string;
-  chains?: ChainIds[];
+  chainId?: ChainIds[];
   excludeSpamTokens?: boolean;
   excludeTokens?: string[];
   className?: string;

@@ -17,7 +17,7 @@ const ADDRESS = "0xd8da6bf26964af9d7eed9e03e53415d37aa96045";
 export default function Home() {
   const [wallet, setWallet] = useState<string>(ADDRESS);
   const [token, setToken] = useState<Token>();
-  const [chain, setChain] = useState<ChainIds | undefined>();
+  const [chainId, setChainId] = useState<ChainIds | undefined>();
 
   const allowedChains = getChains();
 
@@ -39,10 +39,10 @@ export default function Home() {
             <div className="flex items-center gap-2">
               <ChainSelector
                 allowedChains={allowedChains}
-                selectedChain={chain}
-                setSelectedChain={setChain}
+                selectedChainId={chainId}
+                setSelectedChainId={setChainId}
               />
-              <Button onClick={() => setChain(undefined)} disabled={!chain}>
+              <Button onClick={() => setChainId(undefined)} disabled={!chainId}>
                 clear
               </Button>
             </div>
@@ -52,7 +52,7 @@ export default function Home() {
               token={token}
               onTokenChange={setToken}
               wallet={wallet}
-              chains={chain ? [chain] : undefined}
+              chainId={chainId ? [chainId] : undefined}
               excludeSpamTokens
             />
           </div>

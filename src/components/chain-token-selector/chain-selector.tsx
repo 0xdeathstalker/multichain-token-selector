@@ -18,8 +18,8 @@ import { ChainSelectorProps } from "./types";
 
 const ChainSelector: React.FC<ChainSelectorProps> = ({
   allowedChains,
-  selectedChain,
-  setSelectedChain,
+  selectedChainId,
+  setSelectedChainId,
   className,
 }) => {
   const [open, setOpen] = useState<boolean>(false);
@@ -34,13 +34,13 @@ const ChainSelector: React.FC<ChainSelectorProps> = ({
           className={cn("w-[200px] justify-between text-xs", className)}
         >
           <div className="inline-flex items-center gap-2">
-            {selectedChain && (
+            {selectedChainId && (
               <>
-                <ChainLogo chainId={selectedChain} />
-                {capitalize(removeChar(CHAINS[selectedChain]))}
+                <ChainLogo chainId={selectedChainId} />
+                {capitalize(removeChar(CHAINS[selectedChainId]))}
               </>
             )}
-            {!selectedChain && "Select chain..."}
+            {!selectedChainId && "Select chain..."}
           </div>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -53,8 +53,8 @@ const ChainSelector: React.FC<ChainSelectorProps> = ({
 
         <ChainSelection
           allowedChains={allowedChains}
-          selectedChain={selectedChain}
-          setSelectedChain={setSelectedChain}
+          selectedChainId={selectedChainId}
+          setSelectedChainId={setSelectedChainId}
           setDialogOpen={setOpen}
         />
       </DialogContent>

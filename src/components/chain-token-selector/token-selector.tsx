@@ -31,7 +31,7 @@ const TokenSelector: React.FC<TokenSelectorProps> = (props) => {
     props.wallet as `0x${string}`,
     {
       excludeSpamTokens: props.excludeSpamTokens,
-      chainIds: props.chains ? props.chains[0] : undefined,
+      chainIds: props.chainId ? props.chainId[0] : undefined,
     }
   );
   const balances = data?.balances;
