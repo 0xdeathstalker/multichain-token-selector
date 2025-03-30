@@ -23,3 +23,19 @@ export const CHAINS = Object.keys(CHAIN_IDS).reduce((acc, curr) => {
     curr as keyof typeof CHAIN_IDS;
   return acc;
 }, {} as Record<ChainIds, keyof typeof CHAIN_IDS>);
+
+export const MAINNET_SUPPORTED_CHAINS: Record<string, ChainIds> = {
+  ethereum: CHAIN_IDS.ethereum,
+  polygon: CHAIN_IDS.polygon,
+  arbitrum: CHAIN_IDS.arbitrum,
+  optimism: CHAIN_IDS.optimism,
+  zksync: CHAIN_IDS.zksync,
+  avalanche: CHAIN_IDS.avalanche,
+  binance: CHAIN_IDS.binance,
+  polygon_zkevm: CHAIN_IDS.polygon_zkevm,
+  manta: CHAIN_IDS.manta,
+  scroll: CHAIN_IDS.scroll,
+  mantle: CHAIN_IDS.mantle,
+  base: CHAIN_IDS.base,
+  linea: CHAIN_IDS.linea,
+};

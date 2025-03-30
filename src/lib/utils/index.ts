@@ -3,6 +3,9 @@ import { clsx, type ClassValue } from "clsx";
 import { formatUnits } from "viem";
 import { twMerge } from "tailwind-merge";
 import numeral from "numeral";
+import { Chains, MAINNET_SUPPORTED_CHAINS } from "@/constants/chains";
+
+export const DESKTOP_MEDIA_QUERY = "(min-width: 640px)";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -64,4 +67,27 @@ export const tokenKey = (token: Token) =>
 
 export function removeTrailingSlash(url: string) {
   return url.endsWith("/") ? url.slice(0, -1) : url;
+}
+
+export function capitalize(word: string) {
+  return word.charAt(0).toUpperCase() + word.slice(1);
+}
+
+export function getChains() {
+  return Object.values(MAINNET_SUPPORTED_CHAINS).sort((c1, c2) =>
+    c1[0] < c2[0] ? -1 : 1
+  );
+}
+
+export function removeChar(word: string): string {
+  const index = word.indexOf("_");
+  if (index !== 1) {
+    return word.replace("_", " ");
+  }
+  return word;
+}
+
+export function getChainImagePath(chainName: Chains) {
+  const img = chainName === "binance" ? "bnb" : chainName;
+  return `/images/chains/${img}.png`;
 }

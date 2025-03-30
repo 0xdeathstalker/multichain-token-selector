@@ -1,19 +1,9 @@
-// export type Token = {
-//   id: string;
-//   chain: string;
-//   chain_id: string;
-//   amount: string;
-//   decimals: number;
-//   symbol: string;
-//   address: `0x${string}`;
-//   value_usd: number;
-//   price_usd: number;
-// };
+import { ChainIds } from "@/constants/chains";
 
 // Use 'type' for simple type aliases
 export type Token = {
   chain: string;
-  chain_id: number;
+  chain_id: ChainIds;
   address: string;
   amount: string;
   symbol?: string;

@@ -1,12 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import { Chains } from "@/constants/chains";
+import { ChainIds, CHAINS, Chains } from "@/constants/chains";
+import { getChainImagePath } from "@/lib/utils";
 import { getTokenLogoURI } from "@/lib/utils/getTokenLogoURI";
 import { Token } from "@/types";
 import React from "react";
 
 const ChainTokenLogo = ({ token }: { token: Token }) => {
   return (
-    <div className="relative bg-neutral-200 flex items-center justify-center rounded-3xl p-0.5">
+    <div className="relative dark:bg-neutral-600 bg-neutral-200 flex items-center justify-center rounded-3xl p-0.5">
       <img
         src={getTokenLogoURI(
           token.address as `0x${string}`,
@@ -22,7 +23,7 @@ const ChainTokenLogo = ({ token }: { token: Token }) => {
         }}
       />
       <img
-        src={`/images/chains/${token.chain}.png`}
+        src={getChainImagePath(CHAINS[token.chain_id.toString() as ChainIds])}
         alt=""
         width={12}
         height={12}
@@ -36,4 +37,17 @@ const ChainTokenLogo = ({ token }: { token: Token }) => {
   );
 };
 
-export default ChainTokenLogo;
+const ChainLogo = ({ chainId }: { chainId: ChainIds }) => {
+  return (
+    <div className="dark:bg-neutral-600 bg-neutral-200 rounded-3xl p-0.5">
+      <img
+        src={getChainImagePath(CHAINS[chainId])}
+        alt=""
+        width={20}
+        height={20}
+      />
+    </div>
+  );
+};
+
+export { ChainTokenLogo, ChainLogo };
