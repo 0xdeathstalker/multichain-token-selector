@@ -20,16 +20,6 @@ export interface ChainSelectionProps {
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export interface ChainSelectionDrawerProps {
-  chainDrawerOpen: boolean;
-  setChainDrawerOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedChainId: ChainIds | undefined;
-  setSelectedChainId: React.Dispatch<
-    React.SetStateAction<ChainIds | undefined>
-  >;
-  allowedChains: ChainIds[];
-}
-
 export interface ChainListItemProps {
   chainId: ChainIds;
   selectedChainId: ChainIds | undefined;

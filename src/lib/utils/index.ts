@@ -5,6 +5,8 @@ import { twMerge } from "tailwind-merge";
 import numeral from "numeral";
 import { Chains, MAINNET_SUPPORTED_CHAINS } from "@/constants/chains";
 
+export const DESKTOP_MEDIA_QUERY = "(min-width: 640px)";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
