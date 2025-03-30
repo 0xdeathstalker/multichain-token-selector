@@ -1,7 +1,7 @@
 "use client";
 
 import ChainSelector from "@/components/chain-token-selector/chain-selector";
-import TokenSelector from "@/components/token-selector";
+import TokenSelector from "@/components/chain-token-selector/token-selector";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Input } from "@/components/ui/input";
 import { ChainIds } from "@/constants/chains";
@@ -49,8 +49,8 @@ export default function Home() {
 
             {/* Token Selector */}
             <TokenSelector
-              value={token}
-              onValueChange={setToken}
+              token={token}
+              onTokenChange={setToken}
               wallet={wallet}
               chains={chain ? [chain] : undefined}
               excludeSpamTokens

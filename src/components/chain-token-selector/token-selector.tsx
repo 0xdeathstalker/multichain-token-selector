@@ -2,13 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
   Command,
   CommandEmpty,
   CommandGroup,
@@ -16,37 +9,20 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ChainIds } from "@/constants/chains";
-import { cn, formatNumber, formatTokenAmount, tokenKey } from "@/lib/utils";
-import { Token } from "@/types";
-import { ChevronsUpDown } from "lucide-react";
-import { Dispatch, SetStateAction, useState } from "react";
-import { ChainTokenLogo } from "./chain-token-logo";
 import { useEvmTokenBalances } from "@/lib/hooks/useTokenBalances";
-
-interface TokenSelectorProps {
-  value?: Token;
-  defaultValue?: Token;
-  onValueChange: Dispatch<SetStateAction<Token | undefined>>;
-  name?: string;
-  disabled?: boolean;
-  required?: boolean;
-  form?: string;
-  wallet?: string;
-  chains?: ChainIds[];
-  excludeSpamTokens?: boolean;
-  excludeTokens?: string[];
-  className?: string;
-}
-
-interface TokenListItemProps {
-  itemKey: string;
-  selectedToken: Token | undefined;
-  setSelectedToken: Dispatch<SetStateAction<Token | undefined>>;
-  token: Token;
-  setOpen: Dispatch<SetStateAction<boolean>>;
-}
+import { cn, formatNumber, formatTokenAmount, tokenKey } from "@/lib/utils";
+import { ChevronsUpDown } from "lucide-react";
+import { useState } from "react";
+import { ChainTokenLogo } from "../chain-token-logo";
+import { TokenListItemProps, TokenSelectorProps } from "./types";
 
 const TokenSelector: React.FC<TokenSelectorProps> = (props) => {
   const [open, setOpen] = useState(false);
@@ -70,8 +46,8 @@ const TokenSelector: React.FC<TokenSelectorProps> = (props) => {
           className="w-[200px] justify-between text-xs"
         >
           <div className="inline-flex items-center gap-2">
-            {props.value?.address && <ChainTokenLogo token={props.value} />}
-            {props.value ? props.value.symbol : "Select token..."}
+            {props.token?.address && <ChainTokenLogo token={props.token} />}
+            {props.token ? props.token.symbol : "Select token..."}
           </div>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -110,18 +86,16 @@ const TokenSelector: React.FC<TokenSelectorProps> = (props) => {
               <CommandGroup>
                 {balances?.map((token) => {
                   const key = tokenKey(token);
-                  if (token.value_usd) {
-                    return (
-                      <TokenListItem
-                        key={key}
-                        itemKey={key}
-                        token={token}
-                        selectedToken={props.value}
-                        setSelectedToken={props.onValueChange}
-                        setOpen={setOpen}
-                      />
-                    );
-                  }
+                  return (
+                    <TokenListItem
+                      key={key}
+                      itemKey={key}
+                      token={token}
+                      selectedToken={props.token}
+                      setSelectedToken={props.onTokenChange}
+                      setOpen={setOpen}
+                    />
+                  );
                 })}
               </CommandGroup>
             )}

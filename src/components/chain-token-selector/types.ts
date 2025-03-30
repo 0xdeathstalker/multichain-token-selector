@@ -31,20 +31,25 @@ export interface ChainListItemProps {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export interface TokenSelectionProps {
-  isBalancesLoading: boolean;
-  balances: Token[] | undefined;
-  selectedToken: Token | undefined;
-  setSelectedToken: React.Dispatch<React.SetStateAction<Token | undefined>>;
-  setSelectedChain: React.Dispatch<React.SetStateAction<ChainIds | undefined>>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+export interface TokenSelectorProps {
+  token?: Token;
+  defaultToken?: Token;
+  onTokenChange: React.Dispatch<React.SetStateAction<Token | undefined>>;
+  name?: string;
+  disabled?: boolean;
+  required?: boolean;
+  form?: string;
+  wallet?: string;
+  chains?: ChainIds[];
+  excludeSpamTokens?: boolean;
+  excludeTokens?: string[];
+  className?: string;
 }
 
 export interface TokenListItemProps {
   itemKey: string;
   selectedToken: Token | undefined;
   setSelectedToken: React.Dispatch<React.SetStateAction<Token | undefined>>;
-  setSelectedChain: React.Dispatch<React.SetStateAction<ChainIds | undefined>>;
   token: Token;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
