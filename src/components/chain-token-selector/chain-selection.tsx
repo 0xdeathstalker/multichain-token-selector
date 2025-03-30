@@ -21,12 +21,17 @@ import { capitalize, cn, removeChar } from "@/lib/utils";
 import { ChevronsUpDown } from "lucide-react";
 import React, { useEffect } from "react";
 import { Button } from "../ui/button";
-import { ChainSelectionDrawerProps, ChainSelectionProps } from "./types";
+import {
+  ChainListItemProps,
+  ChainSelectionDrawerProps,
+  ChainSelectionProps,
+} from "./types";
 
 const ChainSelection: React.FC<ChainSelectionProps> = ({
   allowedChains,
   selectedChain,
   setSelectedChain,
+  setDialogOpen,
 }) => {
   useEffect(() => {
     if (selectedChain) {
@@ -48,7 +53,7 @@ const ChainSelection: React.FC<ChainSelectionProps> = ({
   return (
     <Command
       defaultValue="-"
-      className="max-w-48 min-h-[340px] max-h-[45svh] bg-transparent border"
+      className="min-h-[340px] max-h-[45svh] bg-transparent border"
     >
       <CommandInput placeholder="Search chain..." className="text-xs" />
       <CommandList>
@@ -58,23 +63,13 @@ const ChainSelection: React.FC<ChainSelectionProps> = ({
 
         <CommandGroup>
           {allowedChains.map((chainId) => (
-            <CommandItem
+            <ChainListItem
               key={chainId}
-              value={`${CHAINS[chainId]}-${chainId}`}
-              data-chain-id={chainId}
-              onSelect={() => {
-                setSelectedChain(chainId);
-              }}
-              className={cn(
-                "text-xs border",
-                selectedChain?.toString() === chainId
-                  ? "border-border bg-secondary"
-                  : "border-transparent"
-              )}
-            >
-              <ChainLogo chainId={chainId} />
-              {capitalize(removeChar(CHAINS[chainId]))}
-            </CommandItem>
+              chainId={chainId}
+              selectedChain={selectedChain}
+              setSelectedChain={setSelectedChain}
+              setOpen={setDialogOpen}
+            />
           ))}
         </CommandGroup>
       </CommandList>
@@ -125,23 +120,13 @@ const ChainSelectionDrawer: React.FC<ChainSelectionDrawerProps> = ({
 
               <CommandGroup>
                 {allowedChains.map((chainId) => (
-                  <CommandItem
+                  <ChainListItem
                     key={chainId}
-                    value={`${CHAINS[chainId]}-${chainId}`}
-                    onSelect={() => {
-                      setSelectedChain(chainId);
-                      setChainDrawerOpen(false);
-                    }}
-                    className={cn(
-                      "text-xs border",
-                      selectedChain?.toString() === chainId
-                        ? "border-border bg-secondary"
-                        : "border-transparent"
-                    )}
-                  >
-                    <ChainLogo chainId={chainId} />
-                    {capitalize(removeChar(CHAINS[chainId]))}
-                  </CommandItem>
+                    chainId={chainId}
+                    selectedChain={selectedChain}
+                    setSelectedChain={setSelectedChain}
+                    setOpen={setChainDrawerOpen}
+                  />
                 ))}
               </CommandGroup>
             </CommandList>
@@ -149,6 +134,34 @@ const ChainSelectionDrawer: React.FC<ChainSelectionDrawerProps> = ({
         </div>
       </DrawerContent>
     </Drawer>
+  );
+};
+
+const ChainListItem: React.FC<ChainListItemProps> = ({
+  chainId,
+  selectedChain,
+  setSelectedChain,
+  setOpen,
+}) => {
+  return (
+    <CommandItem
+      key={chainId}
+      value={`${CHAINS[chainId]}-${chainId}`}
+      data-chain-id={chainId}
+      onSelect={() => {
+        setSelectedChain(chainId);
+        setOpen(false);
+      }}
+      className={cn(
+        "text-xs border",
+        selectedChain?.toString() === chainId
+          ? "border-border bg-secondary"
+          : "border-transparent"
+      )}
+    >
+      <ChainLogo chainId={chainId} />
+      {capitalize(removeChar(CHAINS[chainId]))}
+    </CommandItem>
   );
 };
 

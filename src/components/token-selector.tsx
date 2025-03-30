@@ -2,6 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
   Command,
   CommandEmpty,
   CommandGroup,
@@ -9,19 +16,14 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn, formatNumber, tokenKey } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ChainIds } from "@/constants/chains";
+import { cn, formatNumber, formatTokenAmount, tokenKey } from "@/lib/utils";
 import { Token } from "@/types";
 import { ChevronsUpDown } from "lucide-react";
 import { Dispatch, SetStateAction, useState } from "react";
 import { ChainTokenLogo } from "./chain-token-logo";
 import { useEvmTokenBalances } from "@/lib/hooks/useTokenBalances";
-import { formatTokenAmount } from "@/lib/utils";
-import { Skeleton } from "@/components/ui/skeleton";
 
 interface TokenSelectorProps {
   value?: Token;
@@ -32,6 +34,7 @@ interface TokenSelectorProps {
   required?: boolean;
   form?: string;
   wallet?: string;
+  chains?: ChainIds[];
   excludeSpamTokens?: boolean;
   excludeTokens?: string[];
   className?: string;
@@ -52,12 +55,11 @@ const TokenSelector: React.FC<TokenSelectorProps> = (props) => {
     props.wallet as `0x${string}`,
     { excludeSpamTokens: props.excludeSpamTokens }
   );
-
   const balances = data?.balances;
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
         <Button
           variant="outline"
           role="combobox"
@@ -70,9 +72,17 @@ const TokenSelector: React.FC<TokenSelectorProps> = (props) => {
           </div>
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-[calc(100vw_-_4rem)] sm:w-64 p-0">
-        <Command className="max-h-[45svh]">
+      </DialogTrigger>
+
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="text-sm">Select a token</DialogTitle>
+        </DialogHeader>
+
+        <Command
+          defaultValue="-"
+          className="min-h-[340px] max-h-[45svh] bg-transparent border"
+        >
           <CommandInput placeholder="Search token..." className="text-xs" />
           <CommandList>
             {!isBalancesLoading && (
@@ -83,7 +93,7 @@ const TokenSelector: React.FC<TokenSelectorProps> = (props) => {
 
             {isBalancesLoading ? (
               <div className="p-2">
-                {Array.from({ length: 6 }).map((_, i) => (
+                {Array.from({ length: 7 }).map((_, i) => (
                   <div key={i} className="flex items-center gap-2 p-2">
                     <Skeleton className="h-6 min-w-6 rounded-full" />
                     <div className="w-full flex items-center justify-between">
@@ -95,29 +105,27 @@ const TokenSelector: React.FC<TokenSelectorProps> = (props) => {
               </div>
             ) : (
               <CommandGroup>
-                {balances &&
-                  balances.map((token) => {
-                    const key = tokenKey(token);
-                    // TODO: remove this check once networks.json is defined
-                    if (token.value_usd) {
-                      return (
-                        <TokenListItem
-                          key={key}
-                          itemKey={key}
-                          token={token}
-                          selectedToken={props.value}
-                          setSelectedToken={props.onValueChange}
-                          setOpen={setOpen}
-                        />
-                      );
-                    }
-                  })}
+                {balances?.map((token) => {
+                  const key = tokenKey(token);
+                  if (token.value_usd) {
+                    return (
+                      <TokenListItem
+                        key={key}
+                        itemKey={key}
+                        token={token}
+                        selectedToken={props.value}
+                        setSelectedToken={props.onValueChange}
+                        setOpen={setOpen}
+                      />
+                    );
+                  }
+                })}
               </CommandGroup>
             )}
           </CommandList>
         </Command>
-      </PopoverContent>
-    </Popover>
+      </DialogContent>
+    </Dialog>
   );
 };
 
