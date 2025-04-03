@@ -1,0 +1,25 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry.json",
+    "name": "cracked0x-ui",
+    "homepage": "https://ui.cracked0x.sh/",
+    "items": [
+        {
+            "name": "address-qr",
+            "type": "registry:block",
+            "title": "Address QR",
+            "description": "A QR code component for an address",
+            "tags": [
+                "qr"
+            ],
+            "dependencies": [
+                "cuer"
+            ],
+            "files": [
+                {
+                    "path": "registry/address-qr/address-qr.tsx",
+                    "type": "registry:component"
+                }
+            ]
+        }
+    ]
+}
