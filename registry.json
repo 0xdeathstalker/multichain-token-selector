@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "cracked0x-ui",
+  "homepage": "https://ui.cracked0x.sh/",
+  "items": [
+    {
+      "name": "token-selector",
+      "type": "registry:block",
+      "title": "Token selectoor",
+      "description": "A multichain token selector",
+      "tags": ["token"],
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "lucide-react",
+        "vaul",
+        "cmdk"
+      ],
+      "files": [
+        {
+          "path": "registry/token-selector/token-selector.tsx",
+          "type": "registry:component"
+        }
+      ]
+    }
+  ]
+}

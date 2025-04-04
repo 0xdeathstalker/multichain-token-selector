@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "token-selector",
+  "type": "registry:block",
+  "title": "Multichain token selector",
+  "description": "A multichain token selector component",
+  "dependencies": ["@radix-ui/react-dialog", "lucide-react", "vaul", "cmdk"],
+  "files": [
+    {
+      "path": "registry/token-selector/token-selector.tsx",
+      "content": "import { TokenSelectorProps } from \"@/components/chain-token-selector/types\"\n\nexport function TokenSelector({\n  token,\n  onTokenChange,\n  wallet,\n  chainId,\n}: TokenSelectorProps) {\n  return (\n    <TokenSelector\n      token={token}\n      onTokenChange={onTokenChange}\n      wallet={wallet}\n      chainId={chainId ? chainId : undefined}\n      excludeSpamTokens\n    />\n  );\n}\n",
+      "type": "registry:component"
+    }
+  ]
+}
