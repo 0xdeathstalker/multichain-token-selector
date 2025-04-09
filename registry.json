@@ -1,24 +1,72 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "cracked0x-ui",
-  "homepage": "https://ui.cracked0x.sh/",
+  "homepage": "https://ui.cracked0x.sh",
   "items": [
     {
       "name": "token-selector",
-      "type": "registry:block",
-      "title": "Token selectoor",
+      "type": "registry:component",
+      "title": "Token Selector Component",
       "description": "A multichain token selector",
-      "tags": ["token"],
-      "dependencies": [
-        "@radix-ui/react-dialog",
-        "lucide-react",
-        "vaul",
-        "cmdk"
+      "dependencies": ["viem", "numeral"],
+      "devDependencies": ["@types/numeral"],
+      "registryDependencies": [
+        "button",
+        "dialog",
+        "drawer",
+        "command",
+        "skeleton"
       ],
       "files": [
         {
-          "path": "registry/token-selector/token-selector.tsx",
+          "path": "registry/token-selector/components/token-selector.tsx",
           "type": "registry:component"
+        },
+        {
+          "path": "registry/token-selector/components/chain-token-logo.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/token-selector/components/dune-provider.tsx",
+          "type": "registry:component"
+        },
+        {
+          "path": "registry/token-selector/constants/chains.ts",
+          "type": "registry:file",
+          "target": "src/constants/chains.ts"
+        },
+        {
+          "path": "registry/token-selector/hooks/useDeepMemo.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "registry/token-selector/hooks/useIsomorphicLayoutEffect.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "registry/token-selector/hooks/useMediaQuery.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "registry/token-selector/hooks/useTokenBalances.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "registry/token-selector/lib/dune-api.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "registry/token-selector/lib/format.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "registry/token-selector/lib/logo.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "registry/token-selector/types/api.ts",
+          "type": "registry:file",
+          "target": "src/lib/types/api.ts"
         }
       ]
     }
