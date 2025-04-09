@@ -36,17 +36,7 @@ import { ChevronsUpDown } from "lucide-react";
 import { useState } from "react";
 import { ChainTokenLogo } from "./chain-token-logo";
 import { useMediaQuery } from "@/registry/token-selector/hooks/useMediaQuery";
-
-export type Token = {
-  chain: string;
-  chain_id: string;
-  address: string;
-  amount: string;
-  symbol?: string;
-  decimals?: number;
-  price_usd?: number;
-  value_usd?: number;
-};
+import { Token } from "../lib/types/api";
 
 export interface TokenSelectorProps {
   token?: Token;

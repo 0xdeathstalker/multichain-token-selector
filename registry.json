@@ -64,7 +64,7 @@
           "type": "registry:lib"
         },
         {
-          "path": "registry/token-selector/types/api.ts",
+          "path": "registry/token-selector/lib/types/api.ts",
           "type": "registry:file",
           "target": "src/lib/types/api.ts"
         }

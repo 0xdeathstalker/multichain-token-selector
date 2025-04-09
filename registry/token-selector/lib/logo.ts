@@ -1,15 +1,14 @@
-import { Chains } from "@/constants/chains";
+import { Chains, ChainIds } from "@/constants/chains";
 import { getAddress } from "viem";
-import { Token } from "@/registry/token-selector/components/token-selector";
+import { Token } from "../lib/types/api";
 
 export const isTokenNative = (address: string) =>
   address &&
   (address === "native" ||
     address.toLowerCase() === "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee");
 
-export function getChainImagePath(chainName: Chains) {
-  const img = chainName === "binance" ? "bnb" : chainName;
-  return `/images/chains/${img}.png`;
+export function getChainImagePath(chainId: ChainIds) {
+  return `https://assets.relay.link/icons/${chainId}/light.png`;
 }
 
 export const getTokenLogoURI = (address: `0x${string}`, chain: Chains) => {
