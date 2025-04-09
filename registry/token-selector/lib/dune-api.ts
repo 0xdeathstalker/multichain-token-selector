@@ -4,7 +4,7 @@ import {
   TokensParams,
   TransactionData,
   TransactionsParams,
-} from "@/lib/types/api";
+} from "../lib/types/api";
 
 const BASE_URL = "https://api.dune.com";
 const BALANCES_PREFIX = "api/echo/v1/balances/evm";

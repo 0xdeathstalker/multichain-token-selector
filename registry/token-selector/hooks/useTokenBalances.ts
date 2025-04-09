@@ -7,7 +7,7 @@ import {
 } from "@/registry/token-selector/components/dune-provider";
 import { useDeepMemo } from "@/registry/token-selector/hooks/useDeepMemo";
 import { fetchEvmBalances } from "@/registry/token-selector/lib/dune-api";
-import { BalanceData, FetchError, TokensParams } from "@/lib/types/api";
+import { BalanceData, FetchError, TokensParams } from "../lib/types/api";
 import { isAddress } from "viem";
 
 export const useEvmTokenBalances = (
@@ -59,7 +59,7 @@ export const useEvmTokenBalances = (
         offset: offset ?? undefined,
       };
 
-      const result = await fetchEvmBalances(
+      const result: BalanceData = await fetchEvmBalances(
         walletAddress,
         updatedParams,
         apiKey,

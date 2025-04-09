@@ -1,6 +1,6 @@
 import numeral from "numeral";
 import { formatUnits } from "viem";
-import { Token } from "@/registry/token-selector/components/token-selector";
+import { Token } from "../lib/types/api";
 
 export const formatTokenAmount = (
   _amount: bigint | string,
