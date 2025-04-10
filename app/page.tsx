@@ -1,4 +1,5 @@
 import { SquaresBackground } from "@/components/ui/squares-background";
+import { TextShimmer } from "@/components/ui/text-shimmer";
 
 export default function Page() {
   return (
@@ -7,9 +8,12 @@ export default function Page() {
         <h1 className="bg-gradient-to-br from-white via-[#d4d4d4] to-[#626262] bg-clip-text text-transparent inline-block text-center text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-medium font-sans">
           cracked components
         </h1>
-        <h3 className="bg-gradient-to-br from-white via-[#d4d4d4] to-[#626262] bg-clip-text text-transparent inline-block  font-mono text-xl sm:text-3xl md:text-4xl font-medium">
+        <TextShimmer
+          duration={5}
+          className="font-mono text-xl sm:text-3xl md:text-4xl font-medium"
+        >
           coming soon...
-        </h3>
+        </TextShimmer>
       </div>
 
       <div className="absolute inset-0 -z-50 h-full">
